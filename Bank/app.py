@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask
+from flask import jsonify
+from flask import request
 from flask_pymongo import PyMongo
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'demo'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/demo'
@@ -10,21 +12,11 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/demo'
 
 mongo = PyMongo(app)
 
-'''
-bank_users = {
-    1: { "username": "john", "password": "john1" },
-    2: { "username": "jane", "password": "jane1" },
-    3: { "username": "james", "password": "james1" },
-    4: { "username": "jack", "password": "jack1" },
-    5: { "username": "jill", "password": "jill1"},
-}
-'''
-
 @app.route('/')
 def index():
     return "Banking Management System"
 
-@app.route('/bank_users', methods=['GET'])
+@app.route('/bank_users/', methods=['GET'])
 def get_all_users():
   user = mongo.db.users
   output = []
@@ -33,8 +25,7 @@ def get_all_users():
   return jsonify({'result' : output})
 
  
-
-@app.route('/bank_users/', methods=['GET'])
+@app.route('/bank_users/<username>', methods=['GET']) 
 def get_one_user(username):
   user = mongo.db.users
   u = user.find_one({'username' : username})
@@ -43,8 +34,7 @@ def get_one_user(username):
   else:
     output = "No such name"
   return jsonify({'result' : output})
-
-
+ 
 
    # else:
         
