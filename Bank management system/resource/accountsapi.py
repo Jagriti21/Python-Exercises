@@ -10,11 +10,12 @@ def account_api(app):
     def create_account():
         #try:
             record = json.loads(request.data)
+            print(request.data)
             x=Accounts.objects(username=record['username'])
             y=x.count()
             if y>0:
                 return jsonify({"output":"Username already exists.please provide another!!"}),403
-               # raise AccountAlreadyExistsError("user already exists bro")
+               # raise AccountAlreadyExistsError("user already exists")
             else:
                 customer = Accounts(name=record['name'],username=record['username'],password=record['password'],address=record['address'],state=record['state'],country=record['country'],email=record['email'],pan=record['pan'],contact=record['contact'],DOB=record['DOB'],accounttype=record['accounttype'])
                 return jsonify(customer.save())
